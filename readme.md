@@ -2,7 +2,7 @@
 
 ## DRAFT
 
-This repository hosts terraform files to spin up a new cluster and provide neccesary infrastructure for the devops-practical application. 
+This repository hosts terraform files to spin up a new cluster and provide necessary infrastructure for the devops-practical application. 
 
 This repo also contains a devops-practical helm chart. 
 
@@ -15,5 +15,6 @@ This repo also contains a devops-practical helm chart.
 
 - Figure out / fix redirection issue with devops-practical
 - Codify cert-manager helm chart install (with tf)
-
+- Flesh out this readme
+- Ansible NTP configuration on terraform created nodes
 ...
