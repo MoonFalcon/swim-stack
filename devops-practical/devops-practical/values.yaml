@@ -1,0 +1,15 @@
+# Default values for devops-practical.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+name: devops-practical
+replicaCount: 3
+# Kubernetes service configuration
+service:
+  externalPort: 3000
+  internalPort: 3000
+  type: ClusterIP
+mongoReplicaCount: 1
+mongoService:
+  externalPort: 27017
+  internalPort: 27017

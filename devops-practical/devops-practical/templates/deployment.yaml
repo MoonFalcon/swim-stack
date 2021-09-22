@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      containers:
+        - name: {{ .Values.name }}
+          image: 100072912756.dkr.ecr.us-west-2.amazonaws.com/devops-practical:latest
+          ports:
+            - containerPort: 3000
+          env:
+          - name: MONGODB_URL
+            value: "mongodb://{{ .Values.name }}-mongo:{{ .Values.mongoService.externalPort }}"
