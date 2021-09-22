@@ -1,6 +1,9 @@
-# TODO
+# Swim-Stack
+## DRAFT
+This repository hosts terraform files to spin up a new cluster and provide neccesary infrastructure for the devops-practical application. 
 
-Create ecr repo
-hook up helm chart to ecr
-deploy mongo in same pod as devops-practical
-install cert-manager via helm
+This repo also contains a devops-practical helm chart. 
+
+## Todo:
+Figure out / fix redirection issue.
+...
