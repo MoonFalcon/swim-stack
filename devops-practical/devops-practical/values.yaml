@@ -13,3 +13,4 @@ mongoReplicaCount: 1
 mongoService:
   externalPort: 27017
   internalPort: 27017
+image: 100072912756.dkr.ecr.us-west-2.amazonaws.com/devops-practical:latest

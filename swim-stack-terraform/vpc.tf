@@ -12,6 +12,7 @@ locals {
   cluster_name = "swimstack-${random_id.cluster-suffix.id}"
 }
 
+# Create 1 public and private subnet per availability zone
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "3.2.0"

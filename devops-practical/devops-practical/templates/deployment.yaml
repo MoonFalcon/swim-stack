@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.name }}
-          image: 100072912756.dkr.ecr.us-west-2.amazonaws.com/devops-practical:latest
+          image: {{ .Values.image }}
           ports:
             - containerPort: 3000
           env:
