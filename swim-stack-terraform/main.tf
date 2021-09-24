@@ -1,3 +1,8 @@
+variable "region" {
+  default     = "us-west-2"
+  description = "AWS region"
+}
+
 data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_id
 }
@@ -95,23 +100,6 @@ provider "helm" {
   }
 }
 
-# # Add custom swimlane namespace for our apps to live in
-# resource "kubernetes_namespace" "swimlane" {
-#   metadata {
-#     annotations = {
-#       name = "swimlane"
-#     }
-
-#     labels = {
-#       name = "swimlane"
-#     }
-
-#     name = "swimlane"
-#   }
-
-#   depends_on = [module.eks]
-# }
-
 # Install the ingress-nginx controller
 resource "helm_release" "ingress-nginx" {
   name       = "ingress-nginx"
@@ -124,7 +112,7 @@ resource "helm_release" "ingress-nginx" {
 }
 
 # Install the cert-manager chart
-resource "helm_release" "cert-manager" {
+resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   repository = "https://charts.jetstack.io"
   chart      = "cert-manager"
@@ -141,25 +129,6 @@ resource "helm_release" "cert-manager" {
   ]
 }
 
-# helm install \
-#   cert-manager jetstack/cert-manager \
-#   --namespace cert-manager \
-#   --create-namespace \
-#   --version v1.5.3 \
-#   # --set installCRDs=true
-
-# Install cert-manager into the cluster
-# module "cert_manager" {
-#   source        = "terraform-iaac/cert-manager/kubernetes"
-
-#   cluster_issuer_email                   = "isaacsmothers@yahoo.com"
-#   cluster_issuer_name                    = "cert-manager-global"
-#   cluster_issuer_private_key_secret_name = "cert-manager-private-key"
-#   depends_on = [
-#     helm_release.ingress-nginx
-#   ]
-# }
-
 # Install prod certificate issuer
 resource "helm_release" "letsencrypt" {
   name       = "letsencrypt"
@@ -167,7 +136,7 @@ resource "helm_release" "letsencrypt" {
   namespace = "swimlane"
   create_namespace = true
 
-  depends_on = [helm_release.cert-manager]
+  depends_on = [helm_release.cert_manager]
 }
 
 # ECR repo to host the image utilized by the devops-practical helm chart
