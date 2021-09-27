@@ -1,8 +1,6 @@
-# Swim-Stack
+# swim-stack
 
-## About the project
-
-This repository contains a helm chart that installs mongo and the `devops-practical` node.js application as well as terraform files to build out an EKS cluster and its dependencies.
+`swim-stack` contains files to deploy the devops-practical application and all of its infrastructure dependencies
 
 ## Design
 
