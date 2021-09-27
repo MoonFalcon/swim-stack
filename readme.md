@@ -47,13 +47,13 @@
 
 ## Proof of working application on https
 
-![Success](success.png?raw=true)
+![Success](screenshots/success.png?raw=true)
 
 ## Not handled in this project:
 
 - Custom godaddy domain with ns records from route 53 (I now own isaacsmothers.com, woot!)
 - `A` record (`swimstack.isaacsmothers.com`) pointing to ELB / ingress for the cluster!
-![r53](r53.png?raw=true)
+![r53](screenshots/r53.png?raw=true)
 - Devops-Practical docker image uploaded to ecr
 - AWS account creation
 
