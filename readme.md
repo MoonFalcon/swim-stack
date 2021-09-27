@@ -9,10 +9,10 @@
 - There are two separate terraform projects in this repo, `swim-stack-terraform` and `terraform-state-backend`.
 - `terraform-state-backend` creates a private S3 bucket to hold all of the terraform state files. 
 - `swim-stack-terraform` creates all the other infrastructure necessary to host a k8s service over https
-- `swim-stack-terraform` files are broken into three modules; the root module, `cluster` and `certs`.
-    - `cluster` stands up the cluster and networking dependencies
-    - `certs` stands up all certificate infrastructure with `cert-manager`
-    - The root module references these and also creates an ecr repo to host our `devops-practical` application images
+    - `swim-stack-terraform` files are broken into three modules; the root module, `cluster` and `certs`.
+        - `cluster` stands up the cluster and networking dependencies
+        - `certs` stands up all certificate infrastructure with `cert-manager`
+        - The root module references these and also creates an ecr repo to host our `devops-practical` application images
 
 ### VPC
 
