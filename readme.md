@@ -39,6 +39,8 @@
 
 1. Route DNS to your new elb via an `A` record. In my case I have an `A` record in route53 pointing to my ELB swimstack on a domain I own, swimstack.isaacsmothers.com.
 
+1. Change the account number under `image:` in `devops-practical/values.yaml`
+
 1. You must build and upload the devops-practical image yourself as this repo doesn't include CI scripts (yet). [Guide to pushing a docker image to ECR here](https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html).
 
 1. Run `aws eks list-clusters` and then insert the result into `aws eks update-kubeconfig --name $RESULT`
@@ -59,4 +61,5 @@
 
 ## To-do:
 
-- Ansible NTP configuration on terraform created nodes
+- Codify my ec2 instance I ran ansible playbooks from
+- AWS firewall configuration - whitelist IP to only allow traffic from my home network

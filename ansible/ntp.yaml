@@ -1,0 +1,37 @@
+# taken from https://github.com/rdeenik/purestorage/tree/master/ansible/NTP%20on%20Kubernetes
+# went through each line to gain understanding of ansible and added comments with what each line does
+---
+- name: Get Kubernetes nodes
+  hosts: localhost # executed on local machine, mgmt node is local
+  tasks:
+    - name: Get Kubernetes nodes
+      set_fact:
+        nodes: "{{ lookup('k8s', kind='node') }}" # set_fact sets a variable - lookup searches k8s api for nodes
+    - name: Add host to inventory
+      add_host: # allows you to create a list of hosts to execute against
+        hostname: "{{ item }}" # built-in, represents the current object in with_list
+        groups:
+        - Nodes # a group is an arbitrary selector that organizes the hosts
+      with_list: "{{ nodes | json_query('[*].status.addresses[0].address') }}" # get node list and filter on their ip addresses
+
+- name: Set NTP servers
+  hosts: Nodes
+  # become: yes # Commenting this out as I should be connecting to the eks nodes as root already
+  tasks:
+    - name: Make sure NTP is installed
+      yum: # changed from apt for aws linux ami
+        name: ntp # installs ntp apt package
+        state: present # make sure it is installed, declarative state
+   
+    - name: Copy NTP server configuration
+      template: src=ntp.conf dest=/etc/ntp.conf # templates a file from local/templates to the machine
+
+    - name: Stop NTP client
+      service: name=ntp state=stopped # controls services on the node
+
+    - name: Sync time initialy
+      shell: ntpd -gq # basic shell command
+
+    - name: Make sure NTP is started up
+      service: name=ntp state=started enabled=yes  # starts the service and makes sure it is enabled
+
