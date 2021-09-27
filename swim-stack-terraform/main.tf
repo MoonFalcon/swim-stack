@@ -19,10 +19,12 @@ resource "aws_ecr_repository" "devops-practical" {
   }
 }
 
+# Install VPC and EKS cluster
 module "cluster" {
   source = "./modules/cluster"
 }
 
+# Install certificate management software
 module "certs" {
   source = "./modules/certs"
   cluster_id = module.cluster.cluster_id
