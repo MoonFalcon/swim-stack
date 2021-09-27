@@ -37,13 +37,13 @@
     terraform init; terraform apply (yes)
     ```
 
+1. Route DNS to your new elb via an `A` record. In my case I have an `A` record in route53 pointing to my ELB swimstack on a domain I own, swimstack.isaacsmothers.com.
+
 1. You must build and upload the devops-practical image yourself as this repo doesn't include CI scripts (yet). [Guide to pushing a docker image to ECR here](https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html).
 
 1. Run `aws eks list-clusters` and then insert the result into `aws eks update-kubeconfig --name $RESULT`
 
 1. Navigate to the `devops-practical` directory and install the chart with `helm install devops-practical ./devops-practical -n swimlane`
-
-1. Route DNS to your new elb via a cname record. In my case I can hit https://swimstack.isaacsmothers.com which forwards to my elb over port 443 and then to the internal service over port 3000
 
 ## Proof of working application on https
 
