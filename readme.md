@@ -41,7 +41,7 @@
 
 1. Run `aws eks list-clusters` and then insert the result into `aws eks update-kubeconfig --name $RESULT`
 
-1. Install the devops-practical helm chart with `helm install devops-practical ./devops-practical -n swimlane`
+1. Navigate to the `devops-practical` directory and install the chart with `helm install devops-practical ./devops-practical -n swimlane`
 
 1. Route DNS to your new elb via a cname record. In my case I can hit https://swimstack.isaacsmothers.com which forwards to my elb over port 443 and then to the internal service over port 3000
 
