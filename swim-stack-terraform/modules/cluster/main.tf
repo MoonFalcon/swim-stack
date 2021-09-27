@@ -51,6 +51,42 @@ module "vpc" {
   }
 }
 
+resource "tls_private_key" "ssh" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "ssh" {
+  key_name = "ssh-key"
+  public_key = tls_private_key.ssh.public_key_openssh
+}
+
+# resource "aws_security_group_rule" "workernode-rule" {
+#   type              = "ingress"
+#   from_port         = 22
+#   to_port           = 22
+#   protocol          = "tcp"
+#   security_group_id = "sg-allowssh1"
+# }
+
+resource "aws_security_group" "allow_ssh" {
+  name        = "allow_ssh"
+  description = "Allow inbound ssh"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress = [
+    {
+      description      = "TLS from VPC"
+      from_port        = 22
+      to_port          = 22
+      protocol         = "tcp"
+    }
+  ]
+  tags = {
+    Name = "allow_tls"
+  }
+}
+
 # Build the EKS cluster and worker nodes (1 per az in us-west-2)
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
@@ -70,7 +106,13 @@ module "eks" {
       instance_type        = "t2.small"
       asg_desired_capacity = 3
       root_volume_type     = "gp2"
+      key_name = aws_key_pair.ssh.key_name
+      public_ip = true
     }
+  ]
+
+  worker_additional_security_group_ids = [
+    aws_security_group.allow_ssh.id
   ]
 
   depends_on = [

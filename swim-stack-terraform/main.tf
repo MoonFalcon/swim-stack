@@ -26,6 +26,6 @@ module "cluster" {
 
 # Install certificate management software
 module "certs" {
-  source = "./modules/certs"
+  source     = "./modules/certs"
   cluster_id = module.cluster.cluster_id
 }
