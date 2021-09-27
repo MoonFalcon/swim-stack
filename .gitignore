@@ -1,7 +1,11 @@
 swim-stack-terraform/.*
 swim-stack-terraform/kubeconfig*
-swim-stack-terraform/terraform.tfstate
-swim-stack-terraform/terraform.tfstate.backup
+terraform-state-backend/.terraform*
+terraform-state-backend/terraform*
+swimstack.code-workspace
+**/kubeconfig_swimstack*
+**/terraform.tfstate
+**/terraform.tfstate.backup
 devops-practical/node_modules/
 devops-practical/.monitor
 devops-practical/config/env/env.json
@@ -9,4 +13,3 @@ devops-practical/Makefile
 devops-practical/.DS_Store
 devops-practical/.env
 devops-practical/data
-swimstack.code-workspace
