@@ -6,13 +6,14 @@ data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
 }
 
+data "aws_availability_zones" "available" {}
+
 provider "kubernetes" {
   host                   = data.aws_eks_cluster.cluster.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
   token                  = data.aws_eks_cluster_auth.cluster.token
 }
 
-data "aws_availability_zones" "available" {}
 
 resource "random_id" "cluster-suffix" {
   byte_length = 1
@@ -59,15 +60,11 @@ resource "tls_private_key" "ssh" {
 resource "aws_key_pair" "ssh" {
   key_name = "ssh-key"
   public_key = tls_private_key.ssh.public_key_openssh
+  
+  depends_on = [
+    tls_private_key.ssh
+  ]
 }
-
-# resource "aws_security_group_rule" "workernode-rule" {
-#   type              = "ingress"
-#   from_port         = 22
-#   to_port           = 22
-#   protocol          = "tcp"
-#   security_group_id = "sg-allowssh1"
-# }
 
 resource "aws_security_group" "allow_ssh" {
   name        = "allow_ssh"
@@ -76,15 +73,24 @@ resource "aws_security_group" "allow_ssh" {
 
   ingress = [
     {
-      description      = "TLS from VPC"
+      description      = "SSH inbound"
       from_port        = 22
       to_port          = 22
       protocol         = "tcp"
+      cidr_blocks = null
+      ipv6_cidr_blocks = null
+      prefix_list_ids = null
+      self = null
+      security_groups = null
     }
   ]
   tags = {
-    Name = "allow_tls"
+    Name = "allow_ssh"
   }
+
+  depends_on = [
+    module.vpc
+  ]
 }
 
 # Build the EKS cluster and worker nodes (1 per az in us-west-2)
@@ -116,7 +122,7 @@ module "eks" {
   ]
 
   depends_on = [
-    module.vpc
+    module.vpc, aws_security_group.allow_ssh
   ]
 }
 
